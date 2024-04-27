@@ -4,6 +4,8 @@ A smooth-motion Tetris game for Gameboy Advance written in pure ARM Thumb assemb
 
 The main code is in `Tetris4k.s`. The other files are build-related and small scripts to create the assets.
 
+https://github.com/Clafou/GBA-Croutons/assets/992689/ab3259e5-cc51-4c4a-84f1-3988ab32d1f9
+
 # Original text
 ```
                       ...Croutons...

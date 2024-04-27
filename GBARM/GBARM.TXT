@@ -1,0 +1,282 @@
+
+                 GameBoy Advance ROM Manipulator (GBARM) 1.0
+                =============================================
+
+                           #001 - Table Of Contents
+                          --------------------------
+
+         #001 .................................... Table Of Contents
+         #002 ......................................... Introduction
+         #003 .............................................. History
+         #004 ........................................... How To Use
+         #005 ............................. GBA ROM Header Structure
+         #006 ....................................... GBARM Commands
+         #007 ...................................... Copyright Notes
+
+                             #002 - Introduction
+                            ---------------------
+
+GameBoy  Advance  ROM  Manipulator (GBARM in short) is a simple, small tool to
+manipulate  the  GameBoy  Advance  ROM  files, mostly the header informations.
+Before it was called GameBoy Advance ROM Header Fixer (GBAFix), but due to the
+reason  there  was  a tool under this name I renamed it to GameBoy Advance ROM
+Manipulator  (GBARM) now. I hope it won't conflict with other GBA related tool
+names.
+
+This  tool  is  mostly useful for GameBoy Advance programmers, ROM hackers and
+similiar  people,  if you aren't one, this tool is absolutely useless for you.
+Special  note  to  AOL  kids:  NO, this won't let you play any pirated Pokemon
+games, nor the GameBoy/GameBoy Color, neither the GameBoy Advance ones. :)))
+
+Until  I released the first, beta version of this tool under a different name,
+there  wasn't  any  serious  tool to fix the checksum, add the needed Nintendo
+logo  (what  isn't  stored  inside  this  tool, but calculated) and manipulate
+several  infos  in the GBA ROM headers, that was the reason originally I wrote
+this.  Of  course  programmers  can easily add all the needed infos into their
+sources  (what will be the header of their GBA ROM after compiling) out of the
+checksum,  also  even  everybody can manipulate all these with a hex editor in
+the  compiled  ROMs  out  of the checksum. The checksum must be calculated and
+that's  really  hard to do manually, so the most important and most basic task
+of  this tool was to calculate and store the checksum into the ROM header. And
+then  I thought I'll throw a few more functions into this tool, make the whole
+header  correct,  change  more  easily  everything  in  the  ROM  header  from
+commandline  (so  everybody  can automatize it in a makefile or similiar too),
+view  and verify the header infos, pad the ROM size to a valid size, etc. It's
+a small, but complete and useful tool for these purposes.
+
+It was tested more or less, if you happen to find some bugs, report them to me
+at (credo@resource.cx). You can always find the latest versions on my personal
+site (http://credo.resource.cx/), keep an eye on it.
+
+                                #003 - History
+                               ----------------
+
+02-07-2001 - I renamed the name of the tool to GameBoy Advance ROM Manipulator
+due to name conflicts with already released tools. Also removed the 16 bit CRC
+what  is  not  needed,  was just an old, early design plan of Nintendo and was
+never  used, so could be only confusing (I'm fixing these to the required $00,
+$00  now).  I also added the -i switch to get detailed ROM header info, the -d
+switch  to  change  the  device  type and the -n switch to change the mask ROM
+version number. I also completely rewrote the documentations from scratch.
+
+13-04-2001  -  The  original  0.1 beta version came out under the name GameBoy
+Advance ROM Header Fixer or in short GBAFix.
+
+                              #004 - How To Use
+                             -------------------
+
+GBARM  is  a  PC program running under MS-DOS, Windows 95, Windows 98, Windows
+98SE,  Windows  Millennium  and  all  the  compatible  operation  systems  and
+emulators.  It's  a commandline tool, was compiled with a DOS targeted GCC, so
+probably  easily  portable, but I rarely compile to other targets and give out
+sources,  sorry.  It  is  supporting  long  filenames too of course, but don't
+forget to put the filenames and other infos between "" or '' if they are using
+spaces.
+
+As  it  is  a commandline tool, you have to add parameters after the filename,
+like  "GBARM  -v  gbarom.gba".  The order of the parameters doesn't count, you
+can  mix them up and can use the filename anywhere too. The execution order is
+always  fixed  too, checksums are calculated at the final step, so if the file
+was  padded or header bytes were changed, that won't corrupt the checksums due
+to  the  fixed  order. Parameters can start with the "-" or "/" sign, the sign
+must  be followed with the command immediately (capital or lower case letters,
+all  are  interpreted)  and that must be followed with the other parameters if
+the  command  needs more. At least two parameters are needed, a filename and a
+command, in other cases the help screen will pop up.
+
+Most  of the parameters are either ASCII strings or hexadecimal numbers. Don't
+use  prefixes  and  postfixes and don't use decimal or other format instead of
+these.  Put  the strings too between "" or '' signs in the case they are using
+spaces.
+
+                       #005 - GBA ROM Header Structure
+                      ---------------------------------
+
+In this section you can learn the GBA ROM header structure, I haven't seen too
+many  infos  about  it, so it even can be useful without this tool too, if you
+want  to  change  these  manually in your source or in a ROM with a hexeditor.
+Learning  this  can be useful to understand the switches of this tool too, but
+not absolutely needed of course.
+
+Offset 00h-03h - Start  Address - A 32 bit ARM B command with jump destination
+                 to  the  start  address of the program, cannot be manipulated
+                 with this tool, there's no reason.
+
+Offset 04h-9fh - Nintendo logo character data - The fix Nintendo logo graphics
+                 needed  to  start a ROM on the real machine as it is verified
+                 by it.
+
+Offset a0h-abh - Game  title  -  The game title is an ASCII string, officially
+                 can  use only ASCII characters between the ASCII code 20h and
+                 60h.  Although it is not a strict rule for hobby programmers,
+                 it  is  fun  to  follow such a rules in my opinion. As I know
+                 developers  can  choose  their own game title here describing
+                 the product in short.
+
+Offset ach-afh - Game  code  -  The  4 bytes long code of the game is an ASCII
+                 string  too, officially can use only ASCII characters between
+                 the ASCII code 20h and 60h. The first letter is always A as I
+                 know,  probably  stands  for GBA, so it won't change unless a
+                 higher   hardware   with  backwards  compatibility  won't  be
+                 introduced  and  this letter could hold some more infos about
+                 it. The second and third letters are the shortened version of
+                 the  name of the game. And the fourth letter is the territory
+                 code. Don't afraid, there's no territory lockout, this is for
+                 information  purposes  only.  So  far  as I know J stands for
+                 Japan  and  Asia,  E  stands  for  USA and the whole American
+                 continent  and  P  stands  for  Europe,  Australia and Africa
+                 (probably  came  from  that  these are the PAL video standard
+                 territories,  but  I  could  be  wrong). Although it is not a
+                 strict rule for hobby programmers, it is fun to follow such a
+                 rules  in my opinion. Developers get this 4 letter code right
+                 from Nintendo and they have to use that.
+
+Offset b0h-b1h - Maker  code  - The 2 bytes long code of the developer company
+                 is  an  ASCII  string  too,  officially  can  use  only ASCII
+                 characters between the ASCII code 20h and 60h. Although it is
+                 not  a strict rule for hobby programmers, it is fun to follow
+                 such a rules in my opinion. Developers get this 2 letter code
+                 right from Nintendo and they have to use that.
+
+Offset b2h-b2h - 96h - Fixed 96h byte without any useful information.
+
+Offset b3h-b3h - Main  unit  code  -  This hexadecimal byte is the destination
+                 hardware  code.  It  is always 00h at the moment as it stands
+                 for  GameBoy Advance, so it won't change in the future either
+                 unless  a  higher hardware with backwards compatibility won't
+                 be  introduced and this byte could hold some more infos about
+                 it.  There's  no  reason  to  change  this or write something
+                 different than 00h into it.
+
+Offset b4h-b4h - Device type -  This hexadecimal byte is the device type code.
+                 It  is always 00h as the only other possible value stands for
+                 a  debugger  cart  what  I  assume  won't be available on the
+                 streets  and  I  assume even if a developer works with such a
+                 hardware, he or she doesn't have to change this byte, however
+                 he  or  she  easily  can  of  course. So there's no reason to
+                 change this or write something different than 00h into it.
+
+Offset b5h-bbh - Reserved  area  -  Fixed,  00h filled area without any useful
+                 information.
+
+Offset bch-bch - Mask  ROM  version  number  - This hexadecimal byte holds the
+                 version  number  of  the ROM. As I know it works somehow that
+                 way,  the  first  published  (and released on the streets) is
+                 always  the first version and for that 00h is stored here. In
+                 the  case it is getting updated, so in the same territory the
+                 very  same  game with the very same title is getting replaced
+                 with a new version, what is happening rarely, the number here
+                 is  getting  increased by one. So usually this byte holds 00h
+                 and  there  isn't too much reason to write something here and
+                 something else than 00h.
+
+Offset bdh-bdh - Complement   check   -  This  hexadecimal  byte  have  to  be
+                 calculated  automatically,  when  the  whole header is in its
+                 final  state,  so nothing will change inside of it. (Manually
+                 it  would be hard to calculate.) Add the bytes between offset
+                 a0h  and bch together, take the number's two's complement and
+                 add  19h  to  the  result.  Store  the lowest 8 bits here. Or
+                 calculate   automatically   with   GBARM.   The  hardware  is
+                 verifying  this  byte  just  like the Nintendo logo character
+                 data  and  in the case it isn't correct, the game won't start
+                 on the real machine.
+
+Offset beh-bfh - Reserved  area  -  Fixed,  00h filled area without any useful
+                 information.
+
+                            #006 - GBARM Commands
+                           -----------------------
+
+-h - Get  the  help  screen with a short description about every command and a
+     few  examples.  You  also  get  this  when  you start the program without
+     parameters  or  with  only  one  parameter  (as  it  needs  at  least two
+     parameters, a filename and a command).
+     Example: "GBARM -h"
+
+-i - Get  info  about  a  GBA  ROM. This will report whether the ROM header is
+     correct,  also  will show the ROM title, game code, maker code, main unit
+     code,  device  type,  mask  ROM version number and complement check. Also
+     will report whether the complement check is correct.
+     Example: "GBARM -i gbarom.gba"
+
+-v - Validate  header  command. This will validate the header of the given ROM
+     file.  This  includes  writing out all the fixed values (96h byte, zeroes
+     and  Nintendo logo, what is generated by GBARM, but not stored in it) and
+     calculating  and  storing  the header complement checksum. So this is the
+     most  important  command, probably you won't need the other ones what are
+     just extras.
+     Example: "GBARM -v gbarom.gba"
+
+-p - Pad  ROM image command. Currently the published ROMs are 4 or 8 megabytes
+     large,  maybe  there  will be some 16 or even 32 megabytes large gigantic
+     games  in  the  future too. So ROM image sizes are always a power of two,
+     just  as it was the case in the GB/GBC games. It can be useful to pad the
+     ROM  image.  When  this  command is given alone, it is always padding the
+     given  ROM  image  to  the  next  fixed power of two size, for example an
+     1,334,123  bytes  long  file  will  be  2,097,152  bytes  long (exactly 2
+     megabytes  long),  etc. Nothing will happen if the filesize is already an
+     exact  power  of  two.  And  even  a  hexadecimal  number can follow this
+     command,  in that case the ROM image will be padded to that exact size in
+     the  case  it is larger than the current size. So this way even a 1k long
+     file can be padded to 4 megabyte.
+     Examples: "GBARM -p gbarom.gba", "GBARM -p800000 gbarom.gba"
+
+-f - Change  the pad filler byte command. With the pad command (unless it does
+     nothing)  additional,  useless,  filler  bytes  will  be added to the ROM
+     image.  With  this  command  it is possible to control what bytes will be
+     used  by  the  pad  command. By default it is hexadecimal ffh, that's the
+     most  optimal  in the case of flash ROMs, it can be stored faster. But if
+     you  use the pad command, you can add this command too to the commandline
+     immediately  followed  by  a  two  digit  hexadecimal  number and the pad
+     command will use this instead the default one.
+     Example: "GBARM -p -f5a gbarom.gba"
+
+-t - Change the game title command. The game title ASCII string have to follow
+     immediately  this  command  and in the case it contains spaces, the title
+     have  to  be between "" or ''. The string can be maximum 12 letters long,
+     more  will  be  cropped down, less will be filled up with zeroes. See the
+     other rules in the previous chapter.
+     Examples: "GBAFIX -tHI gbarom.gba", "GBAFIX -t'HELLO WORLD' gbarom.gba"
+
+-c - Change  the  game code command. The game code ASCII string have to follow
+     immediately  this  command  and  in the case it contains spaces, the code
+     have  to  be  between "" or ''. The string can be maximum 4 letters long,
+     more  will  be  cropped down, less will be filled up with zeroes. See the
+     other rules in the previous chapter.
+     Example: "GBAFIX -cAGRP gbarom.gba"
+
+-m - Change the maker code command. The maker code ASCII string have to follow
+     immediately  this  command  and  in the case it contains spaces, the code
+     have  to  be  between "" or ''. The string can be maximum 2 letters long,
+     more  will  be  cropped down, less will be filled up with zeroes. See the
+     other rules in the previous chapter.
+     Example: "GBAFIX -mYO gbarom.gba"
+
+-u - Change the main unit code command. As you can see in the previous chapter
+     there's  no  reason  to  change  it,  anyway  it can be changed with this
+     command  immediately  followed by a two digit hexadecimal number. See the
+     infos about this byte in the previous chapter.
+     Example: "GBAFIX -u6b gbarom.gba"
+
+-d - Change  the  device  type command. As you can see in the previous chapter
+     there's  no  reason  to  change  it,  anyway  it can be changed with this
+     command  immediately  followed by a two digit hexadecimal number. See the
+     infos about this byte in the previous chapter.
+     Example: "GBAFIX -d5c gbarom.gba"
+
+-n - Change  the  mask  ROM  version  number  command.  As  you can see in the
+     previous  chapter  there's no reason to change it often, anyway it can be
+     changed with this command immediately followed by a two digit hexadecimal
+     number. See the infos about this byte in the previous chapter.
+     Example: "GBAFIX -n01 gbarom.gba"
+
+                            #007 - Copyright Notes
+                           ------------------------
+
+This  tool  is  free,  can  be  used  and spreaded freely in its original form
+without  modifications.  However  it  is not public domain and not opensource,
+all rights are reserved by the author. No one shall modify or charge money for
+this  tool and package. If you use this tool and like it, feel free to send me
+greetings in your games and productions, hehe.
+
+                                           CREDO/SCS*TRC^RESOURCE - 02-07-2001

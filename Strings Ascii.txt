@@ -1,0 +1,201 @@
+_Next
+Next
+_Level
+Level
+_Score
+Score
+_GameOver
+Game Over!
+
+
+Press Start
+to play again
+
+~
+_Intro
+---------
+
+Welcome
+to
+Croutons!
+
+---------
+
+
+Press Start
+to play
+
+
+
+This is a Tetris game
+for Gameboy Advance
+
+Made by 
+Sebastien Molines
+a.k.a.
+Clafou
+
+For the four kilobytes
+coding competition
+organized by
+GBAEmu.com
+
+
+
+
+I hope you will
+enjoy it! 
+
+
+
+
+-How to play-
+
+
+Press the
+A and B buttons to
+make the pieces spin.
+
+
+Use the arrows to control
+the pieces, and the down
+arrow to accelerate
+their fall.
+
+
+You'll get further if
+you blow up several lines
+at once!
+...
+
+That's because the speed
+gets increased after ten
+blow-ups, no matter how
+many lines have been
+blown up in total.
+
+
+
+
+----------------
+
+Greetings
+to the
+following people
+
+----------------
+
+
+-Blinis-
+
+
+-Foofur-
+
+
+-Patapom-
+
+
+-Oxygene-
+Hello Leonard!
+
+
+-Everyone at MJJ-
+
+
+-Brume-
+
+
+-Russ and Ant-
+Thanks for Steem and
+its great support for
+the Anomaly!
+
+
+-Therese-
+Lots of love!
+
+
+
+
+----------
+
+Thank-yous
+
+----------
+
+
+I could not have
+made this game without
+the free resources
+and tools made
+available by
+...
+
+
+Jason Wilkins
+
+
+Jeff Frohwein
+
+
+Credo
+
+
+The Free Software Foundation
+
+
+All the GameBoy Advance
+development site
+authors
+
+
+All the authors of
+GameBoy Advance
+emulators
+
+
+
+
+
+If you would like to
+see the source code,
+you'll find it at
+clafou.free.fr
+
+
+I took advantage of some
+of the Gameboy Advance's
+great built-in features,
+rotational sprites and
+alpha-blending.
+
+
+I coded everything in
+ARM Thumb assembly language
+in order to keep the
+file size small.
+
+
+Unfortunately, I haven't
+seen this run on the
+real hardware!
+...
+
+If you can and find
+that anything is wrong
+please let me know.
+
+
+
+Enjoy
+...
+
+Clafou
+
+
+
+
+
+
+
+~
